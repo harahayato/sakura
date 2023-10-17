@@ -22,7 +22,7 @@ def point(self):
 
 # URLパラメータを指定
     params = {
-        'apikey':'9E8989FE46668BD54094AB918F3521C1C1620AF8',
+        'apikey':'',
         'out':'json',
         'text':text
         }
