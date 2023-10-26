@@ -3,17 +3,32 @@
 {% block header %}{% endblock %}
 {% block content %}
 <div class = "result">
-    <div class = "result-title">
-        <h1>診断結果</h1>
+
+    <div id="splash">
+        <div id="splash_text"></div>
+        <div class="loader_cover loader_cover-up"></div>
+        <div class="loader_cover loader_cover-down"></div>
     </div>
-    <div class = "result-number">
-        <h2>{{ kokuhaku_late }}</h2>
-    </div>
-    <div class = "result-text">
-        <p>テキスト</p>
-    </div>
-    <div class = "to-top-button send-button">
-        <a href = "{{ url_for('index') }}">TOPへ戻る</a>
-    </div>
+
+    <main>
+        <div class = "result-title">
+            <h1>診断結果</h1>
+        </div>
+        <div class = "result-number">
+            <h2 class = "number" data-num = {{ kokuhaku_late }}></h2>
+        </div>
+        <div class = "result-text">
+            <p>{{ kokuhaku_advice }}</p>
+        </div>
+        <div class = "to-top-button send-button">
+            <a href = "{{ url_for('index') }}">TOPへ戻る</a>
+        </div>
+    </main>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/master/dist/progressbar.min.js"></script>
+<!--IE11用※対応しなければ削除してください-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
 {% endblock %}

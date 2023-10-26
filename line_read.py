@@ -1,6 +1,8 @@
 import re
 import os
 import pandas as pd
+import csv
+import datetime
 
 # 日付行で分割
 def get_date_content(text):
@@ -142,24 +144,52 @@ def parse_linelog(textdata):
     
     return logs
 
-# チャットログファイルのパスを指定
-PATH = "ichiha-talk.txt"
+def translate_line(line_file):
+    # チャットログファイルのパスを指定
+    PATH = line_file
 
-# ファイルを読み込んでtextdataに格納
-with open(PATH, "r", encoding='UTF-8') as f:
-    textdata = f.read()
+    # ファイルを読み込んでtextdataに格納
+    with open(PATH, "r", encoding='UTF-8') as f:
+        textdata = f.read()
 
-# DataFrameのカラム名を定義
-header = ["datestr", "timestr", "name", "content_no_tab_and_br", "send_type", "year", "month", "day", "weekday", "timestr", "length", "param0_key", "param0_val", "param1_key", "param1_val"]
+    # DataFrameのカラム名を定義
+    header = ["datestr", "timestr", "name", "content_no_tab_and_br", "send_type", "year", "month", "day", "weekday", "timestr", "length", "param0_key", "param0_val", "param1_key", "param1_val"]
 
-# LINEのチャットログのパース結果を取得
-logs = parse_linelog(textdata)
+    # LINEのチャットログのパース結果を取得
+    logs = parse_linelog(textdata)
 
-# データをDataFrameに変換
-df = pd.DataFrame({k: [v.get(k, "") for v in logs] for k in header})
+    # データをDataFrameに変換
+    df = pd.DataFrame({k: [v.get(k, "") for v in logs] for k in header})
 
-# カラム名を変更（content_no_tab_and_brをcontentに変更）
-df = df.rename(columns={"content_no_tab_and_br": "content"})
+    # カラム名を変更（content_no_tab_and_brをcontentに変更）
+    df = df.rename(columns={"content_no_tab_and_br": "content"})
 
-# 結果を保存
-df.to_csv("log.tsv", sep="\t", index=False, header=True, encoding='utf-8')
+    # 結果を保存
+    df.to_csv("log.tsv", sep="\t", index=False, header=True, encoding='utf-8')
+
+def pick_linelog(log_file, partner_name):
+    
+    file_name = log_file
+    
+    text = ''
+    
+    with open(file_name, "r") as f:
+        reader = csv.reader(f, delimiter="\t")
+        next(reader)
+        
+        for row in reader:
+            line = row
+        last_day = datetime.date(int(line[5]), int(line[6]), int(line[7]))
+    
+    with open(file_name, "r") as f:        
+        reader = csv.reader(f, delimiter="\t")
+        next(reader)
+        
+        for row in reader:
+            if(row[2] == partner_name):
+                line_date = datetime.date(int(row[5]), int(row[6]), int(row[7]))
+                date_difference = last_day - line_date
+                date_difference_day = date_difference.days
+                if (int(date_difference_day) <= 7):
+                    text += str(row[3])
+    return text
