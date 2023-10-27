@@ -21,7 +21,8 @@ def text_form():
     form = InputForm()
     #POST
     if form.validate_on_submit():
-        session['line_file'] = form.line_file.data
+        file = os.path.abspath(form.line_file.data)
+        session['line_file'] = file
         session['your_name'] = form.your_name.data
         session['partner_name'] = form.partner_name.data 
         return redirect(url_for('result'))
