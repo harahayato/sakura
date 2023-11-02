@@ -1,4 +1,4 @@
 flask
-gunicorn==19.9.0
+gunicorn == 19.9.0
 dotenv
 requests
