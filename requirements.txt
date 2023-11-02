@@ -1,2 +1,4 @@
 Flask
 Gunicorn==19.9.0
+dotenv
+requests
