@@ -46,7 +46,7 @@ def result():
     your_replay_speed = line_read.calculate_your_replay_speed('log.tsv', your_name)
     partner_replay_speed = line_read.calculate_partner_replay_speed('log.tsv', partner_name)
     replay_advice = calculate_kokuhaku.replay_advice(your_replay_speed, partner_replay_speed, partner_name)
-    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice, replay_advice = replay_advice, negaposi_late = negaposi_late)
+    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice, replay_advice = replay_advice)
 
 if __name__ == '__main__':
     app.run()
