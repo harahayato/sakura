@@ -2,4 +2,3 @@ flask
 gunicorn == 19.9.0
 dotenv
 requests
-wheel
