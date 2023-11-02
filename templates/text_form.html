@@ -5,16 +5,16 @@
     <form method = "POST">
         <div class = "text-form-wrapper">
             <div class = "anya-image text-form">
-                <img src = "{{url_for('static', filename='images/anya.avif')}}">
+                <img src = "{{url_for('static', filename='images/girl-center.jpg')}}">
             </div>
             <div class = "text-form-content">
                 <div class="fukidasi">
-                    <p>LINEのテキストファイルを選択してください</p>
+                    <p>LINEのテキストファイルを選択して、LINE上でのあなたの名前と<br>相手の名前を入力してください</p>
                 </div>
                 <div class = "form-content-file"></div>
                     {{ form.csrf_token }}
-                    <div class = "line-file-wrapper">
-                        {{ form.line_file }}
+                    <div class = "line-file-wrapper">                    
+                        {{ form.line_file }}                     
                     </div>
                     <div class ="name-input-content">
                         <p class = "name-input-before">名前：</p>

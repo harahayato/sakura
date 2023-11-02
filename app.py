@@ -36,13 +36,17 @@ def text_form():
 @app.route('/result')
 def result():
     line_file = session['line_file'] 
+    your_name = session['your_name']
     partner_name = session['partner_name']
     line_file_after = line_read.translate_line(line_file)
     line_file_pick = line_read.pick_linelog('log.tsv', partner_name)
     negaposi_late = calculate_kokuhaku.calculate_negaposi(line_file_pick)
     kokuhaku_late = calculate_kokuhaku.calculate_kokuhaku_late(negaposi_late)
     kokuhaku_advice = calculate_kokuhaku.kokuhaku_advice(kokuhaku_late)
-    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice)
+    your_replay_speed = line_read.calculate_your_replay_speed('log.tsv', your_name)
+    partner_replay_speed = line_read.calculate_partner_replay_speed('log.tsv', partner_name)
+    replay_advice = calculate_kokuhaku.replay_advice(your_replay_speed, partner_replay_speed, partner_name)
+    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice, replay_advice = replay_advice, negaposi_late = negaposi_late)
 
 if __name__ == '__main__':
     app.run()

@@ -17,11 +17,18 @@
         <div class = "result-number">
             <h2 class = "number" data-num = {{ kokuhaku_late }}></h2>
         </div>
-        <div class = "result-text">
-            <p>{{ kokuhaku_advice }}</p>
+        <div class = "result-text-content">
+            <div class = "anya-image result">
+                <img src = "{{url_for('static', filename='images/girl-right.jpg')}}">
+            </div>
+            <div class = "result-text">
+                <p>{{ kokuhaku_advice }}</p>
+                <p>{{ replay_advice }}</p>
+                <p>{{ negaposi_late}}</p>
+            </div>
         </div>
         <div class = "to-top-button send-button">
-            <a href = "{{ url_for('index') }}">TOPへ戻る</a>
+            <a href = "https://www.youtube.com/watch?v=f9-PYxAKdfY">ボタンをクリックすると・・・</a>
         </div>
     </main>
 </div>

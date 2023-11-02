@@ -167,13 +167,14 @@ def translate_line(line_file):
     # 結果を保存
     df.to_csv("log.tsv", sep="\t", index=False, header=True, encoding='utf-8')
 
+#LINEテキストの抽出
 def pick_linelog(log_file, partner_name):
     
     file_name = log_file
     
     text = ''
     
-    with open(file_name, "r") as f:
+    with open(file_name, "r", encoding = 'utf-8') as f:
         reader = csv.reader(f, delimiter="\t")
         next(reader)
         
@@ -181,7 +182,7 @@ def pick_linelog(log_file, partner_name):
             line = row
         last_day = datetime.date(int(line[5]), int(line[6]), int(line[7]))
     
-    with open(file_name, "r") as f:        
+    with open(file_name, "r", encoding = 'utf-8') as f:        
         reader = csv.reader(f, delimiter="\t")
         next(reader)
         
@@ -190,6 +191,80 @@ def pick_linelog(log_file, partner_name):
                 line_date = datetime.date(int(row[5]), int(row[6]), int(row[7]))
                 date_difference = last_day - line_date
                 date_difference_day = date_difference.days
-                if (int(date_difference_day) <= 7):
+                if (int(date_difference_day) <= 7) and (len(text) <= 1100):
                     text += str(row[3])
     return text
+
+
+#LINEの返信速度の計算（自分）
+def calculate_your_replay_speed(log_file, your_name):
+    
+    file_name = log_file
+    your_name = your_name
+    
+    your_replay_number = 0   
+    your_replay_time = datetime.timedelta(0, 0, 0)
+    
+    with open(file_name, "r", encoding = 'utf-8') as f:
+        reader = csv.reader(f, delimiter="\t")
+        next(reader)
+        
+        time_hull = None
+        talker_name = None
+        time_difference = None
+        
+        for row in reader:            
+            if (str(row[2]) != str(talker_name)):
+                if(str(row[2]) == your_name):                    
+                    your_replay_number = your_replay_number + 1
+                    time_hour_minite_now = row[1].split(':')
+                    time_hull_now = datetime.datetime(int(row[5]), int(row[6]), int(row[7]), int(time_hour_minite_now[0]), int(time_hour_minite_now[1]), 00)
+                    if (time_hull != None):
+                        time_difference = time_hull_now - time_hull  
+                        your_replay_time += time_difference                                      
+            time_hour_minite = row[1].split(':')
+            time_hull = datetime.datetime(int(row[5]), int(row[6]), int(row[7]), int(time_hour_minite[0]), int(time_hour_minite[1]), 00)
+            talker_name = str(row[2]) 
+    if (your_replay_number != 0):        
+        your_average_replay_speed = your_replay_time / your_replay_number
+        your_average_replay_speed = round(your_average_replay_speed.total_seconds() / 60)
+    else:
+        your_average_replay_speed = 0
+          
+    return your_average_replay_speed
+
+#LINEの返信速度の計算（相手）
+def calculate_partner_replay_speed(log_file, partner_name):
+    
+    file_name = log_file
+    partner_name = partner_name
+    
+    partner_replay_number = 0   
+    partner_replay_time = datetime.timedelta(0, 0, 0)
+    
+    with open(file_name, "r", encoding = 'utf-8') as f:
+        reader = csv.reader(f, delimiter="\t")
+        next(reader)
+        
+        time_hull = None
+        talker_name = None
+        time_difference = None
+        
+        for row in reader:            
+            if (str(row[2]) != str(talker_name)):
+                if(str(row[2]) == partner_name):                    
+                    partner_replay_number = partner_replay_number + 1
+                    time_hour_minite_now = row[1].split(':')
+                    time_hull_now = datetime.datetime(int(row[5]), int(row[6]), int(row[7]), int(time_hour_minite_now[0]), int(time_hour_minite_now[1]), 00)
+                    if (time_hull != None):
+                        time_difference = time_hull_now - time_hull  
+                        partner_replay_time += time_difference                                      
+            time_hour_minite = row[1].split(':')
+            time_hull = datetime.datetime(int(row[5]), int(row[6]), int(row[7]), int(time_hour_minite[0]), int(time_hour_minite[1]), 00)
+            talker_name = str(row[2]) 
+            
+    partner_average_replay_speed = partner_replay_time / partner_replay_number
+    partner_average_replay_speed = round(partner_average_replay_speed.total_seconds() / 60)
+    
+    return partner_average_replay_speed
+

@@ -6,6 +6,7 @@ import requests
 import time
 from urllib.parse import quote
 import urllib
+import math
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './env/api.json'
 
@@ -24,7 +25,7 @@ class calculate_kokuhaku:
             }
         
         params = {
-            'apikey':'C65940842ECB750CE64721299AE835BDBB84CEE9',
+            'apikey':'',
             'out':'json',
             'text':text
             } 
@@ -39,15 +40,16 @@ class calculate_kokuhaku:
 
         # 結果を表示するテンプレートにリダイレクト   
         
+        
         return negaposi_late
     
     def calculate_kokuhaku_late(negaposi_late):
-        if (negaposi_late == None):
+        if (int(negaposi_late) == None):
             kokuhaku_late = 0
-        elif (negaposi_late <= 0):
+        elif (int(negaposi_late) <= 0):
             kokuhaku_late = 0
         else:
-            kokuhaku_late = round(negaposi_late * 33.3)
+            kokuhaku_late = math.floor(negaposi_late * 49 + 1)
         return kokuhaku_late
     
     def kokuhaku_advice(kokuhaku_late):
@@ -67,3 +69,22 @@ class calculate_kokuhaku:
         elif kokuhaku_late >= 85 and kokuhaku_late <= 99:
             advice = '非常に深い親密な関係が築かれており、お互いを完全に信頼しています。この段階では、お互いの幸福を支え、長期的な関係を維持しましょう。お互いの成功や挑戦に対して強力なサポートを提供し、感謝の意を表現しましょう。長期的な友情やパートナーシップを大切にし、新たな冒険を共に楽しんでください。'
         return advice
+    
+    def replay_advice(your_replay_speed, partner_replay_speed, partner_name):
+       replay_speed_distance = abs(your_replay_speed - partner_replay_speed)
+       
+       replay_advice = ''
+       
+       replay_advice_one = 'あなたの返信速度の平均は{}分で、相手の返信速度の平均は{}分です。返信速度の平均の差は{}分あります。一般的に返信速度に差はない方が良いとされています。'.format(your_replay_speed, partner_replay_speed, replay_speed_distance)
+       if (replay_speed_distance >= 1000):
+           replay_advice_two = 'あなたと{}さんには返信速度に大きな差があります。あまり会話が続いていないのではないですか？心機一転、新しい話題を投げて話始めてはどうですか。'.format(partner_name)
+       elif (your_replay_speed > partner_replay_speed):
+           replay_advice_two = '{}さんははもっとあなたと会話したいと思っているかもしれません。返信速度をもう少し早くしてみてはどうですか。'.format(partner_name)
+       else:
+           replay_advice_two = '{}さんはもっとすっくりなペースで会話したいと思っているのかもしれません。返信速度をもう少し遅くしてみてはどうですか。'.format(partner_name)
+           
+       replay_advice = replay_advice_one + replay_advice_two
+       
+       
+       
+       return replay_advice
