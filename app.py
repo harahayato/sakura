@@ -11,6 +11,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 from forms import InputForm
 
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -25,12 +26,13 @@ def text_form():
         session['line_file'] = file
         session['your_name'] = form.your_name.data
         session['partner_name'] = form.partner_name.data 
+        print(1)
         return redirect(url_for('result'))
     #GET
-    if 'line_file' in session:
-        form.line_file = session['line_file']
-        form.your_name = session['your_name']  
-        form.partner_name = session['partner_name']
+    #if 'line_file' in session:
+        #form.line_file = session['line_file']
+        #form.your_name = session['your_name']  
+        #form.partner_name = session['partner_name']
     return render_template('text_form.html', form = form)
 
 @app.route('/result')
