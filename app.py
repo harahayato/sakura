@@ -12,6 +12,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 from forms import InputForm
 
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -29,6 +30,7 @@ def text_form():
         session['file_path'] = filepath
         session['your_name'] = form.your_name.data
         session['partner_name'] = form.partner_name.data 
+        print(1)
         return redirect(url_for('result'))
     #GET
     #if 'line_file' in session:
@@ -50,7 +52,7 @@ def result():
     your_replay_speed = line_read.calculate_your_replay_speed('log.tsv', your_name)
     partner_replay_speed = line_read.calculate_partner_replay_speed('log.tsv', partner_name)
     replay_advice = calculate_kokuhaku.replay_advice(your_replay_speed, partner_replay_speed, partner_name)
-    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice, replay_advice = replay_advice, negaposi_late = negaposi_late)
+    return render_template('result.html', kokuhaku_late = kokuhaku_late, kokuhaku_advice = kokuhaku_advice, replay_advice = replay_advice)
 
 if __name__ == '__main__':
     app.run()

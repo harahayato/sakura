@@ -8,4 +8,4 @@ class InputForm(FlaskForm):
     partner_name = StringField('相手の名前：', validators = [DataRequired('必須入力です')], render_kw={"placeholder": "（例）恋愛　花子"})
     submit = SubmitField('診断する')
     
-  
+

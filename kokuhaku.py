@@ -7,8 +7,9 @@ import time
 from urllib.parse import quote
 import urllib
 import math
+import settings
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './env/api.json'
+API_KEY = settings.AP
 
 class calculate_kokuhaku:
     
@@ -25,7 +26,7 @@ class calculate_kokuhaku:
             }
         
         params = {
-            'apikey':'',
+            'apikey':API_KEY,
             'out':'json',
             'text':text
             } 
