@@ -2,6 +2,7 @@ from flask import Flask, render_template, session, redirect, jsonify, request, u
 from kokuhaku import calculate_kokuhaku
 import os
 import line_read
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -20,25 +21,28 @@ def index():
 def text_form():
     form = InputForm()
     #POST
-    if form.validate_on_submit():
-        file = os.path.abspath(form.line_file.data)
-        session['line_file'] = file
+    #if form.validate_on_submit():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        filepath = './static/text' + secure_filename(f.filename)
+        f.save(filepath)
+        session['file_path'] = filepath
         session['your_name'] = form.your_name.data
         session['partner_name'] = form.partner_name.data 
         return redirect(url_for('result'))
     #GET
-    if 'line_file' in session:
-        form.line_file = session['line_file']
-        form.your_name = session['your_name']  
-        form.partner_name = session['partner_name']
+    #if 'line_file' in session:
+        #form.line_file = session['line_file']
+        #form.your_name = session['your_name']  
+        #form.partner_name = session['partner_name']
     return render_template('text_form.html', form = form)
 
 @app.route('/result')
 def result():
-    line_file = session['line_file'] 
+    file_path = session['file_path']
     your_name = session['your_name']
     partner_name = session['partner_name']
-    line_file_after = line_read.translate_line(line_file)
+    line_file_after = line_read.translate_line(file_path)
     line_file_pick = line_read.pick_linelog('log.tsv', partner_name)
     negaposi_late = calculate_kokuhaku.calculate_negaposi(line_file_pick)
     kokuhaku_late = calculate_kokuhaku.calculate_kokuhaku_late(negaposi_late)

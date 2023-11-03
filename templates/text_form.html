@@ -2,7 +2,7 @@
 {% block title %}テキストファイル選択{% endblock %}
 {% block header %}{% endblock %}
 {% block content %}
-    <form method = "POST">
+    <form method = "POST" enctype="multipart/form-data">
         <div class = "text-form-wrapper">
             <div class = "anya-image text-form">
                 <img src = "{{url_for('static', filename='images/girl-center.jpg')}}">
@@ -14,7 +14,7 @@
                 <div class = "form-content-file"></div>
                     {{ form.csrf_token }}
                     <div class = "line-file-wrapper">                    
-                        {{ form.line_file }}                     
+                        <input type="file" class = "line-file" name="file" accept=".txt">                   
                     </div>
                     <div class ="name-input-content">
                         <p class = "name-input-before">名前：</p>
